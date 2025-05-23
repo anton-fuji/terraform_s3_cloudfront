@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "site_bucket" {
   bucket = var.bucket_name
 
   tags = {
-    Name = "My Site Bucket"
+    Name = var.bucket_name
     Environment = "Production"
   }
 }
@@ -20,7 +20,7 @@ resource "aws_s3_bucket_ownership_controls" "site_bucket" {
 resource "aws_s3_bucket_acl" "site_bucket" {
   depends_on = [ 
     aws_s3_bucket_ownership_controls.site_bucket,
-    aws_s3_bucket_public_block.site_bucket,
+    aws_s3_bucket_public_access_block.site_bucket,
    ]
 
    bucket = aws_s3_bucket.site_bucket.id
@@ -33,7 +33,7 @@ resource "aws_cloudfront_origin_access_identity" "oai" {
 }
 
 # Public Access Block
-resource "aws_s3_account_public_access_block" "site_bucket" {
+resource "aws_s3_bucket_public_access_block" "site_bucket" {
   bucket = aws_s3_bucket.site_bucket.id
 
   block_public_acls = true
@@ -44,20 +44,20 @@ resource "aws_s3_account_public_access_block" "site_bucket" {
 
 # bucket policy to allow CloudFront access
 resource "aws_s3_bucket_policy" "site_bucket_policy" {
-  bucket = as_s3_bucket.site_bucket.id
+  bucket = aws_s3_bucket.site_bucket.id
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Sid       = "Allow CloudFront" 
+      Sid       = "AllowCloudFrontAccess" 
       Effect    = "Allow"
       Principal = { 
         AWS = aws_cloudfront_origin_access_identity.oai.iam_arn 
       }
-      Actions    = [
+      Action    = [
         "s3:GetObject"
       ]
-      Resources  = [
-        "${aws_s3_bucket.site.arn}/*"
+      Resource  = [
+        "${aws_s3_bucket.site_bucket.arn}/*"
       ]
     }]
   })

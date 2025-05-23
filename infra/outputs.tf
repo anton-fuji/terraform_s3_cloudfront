@@ -1,3 +1,9 @@
+data "aws_caller_identity" "me" {}
+
+output "account_id" {
+  value = data.aws_caller_identity.me.account_id
+}
+
 # S3
 output "bucket_name" {
   description = "S3 bucket name"
