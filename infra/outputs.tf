@@ -26,3 +26,9 @@ output "certificate_arn" {
   description = "ACM certificate ARN"
   value       = aws_acm_certificate.cert.arn
 }
+
+# the ARN of the GitHub Actions role
+output "github_actions_deployer_role_arn" {
+  description = "ARN of the IAM Role for GitHub Actions deployment"
+  value       = aws_iam_role.github_actions_deployer_role.arn
+}
