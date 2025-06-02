@@ -4,7 +4,7 @@
 
 **CloudShellを利用される方は、以下を実行してください。**
 
-## Set up CloudShell
+## Set up Terraform on CloudShell
 ```sh
 # Terraform v1.11.4 をダウンロード
 wget https://releases.hashicorp.com/terraform/1.11.4/terraform_1.11.4_linux_amd64.zip
