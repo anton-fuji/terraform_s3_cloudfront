@@ -2,7 +2,7 @@
 ## 構成イメージ
 ![](img/architecture-diagram.png)
 
-**CloudShellを利用される方は、以下を実行してください。**
+
 
 ## Set up Terraform on CloudShell
 ```sh
